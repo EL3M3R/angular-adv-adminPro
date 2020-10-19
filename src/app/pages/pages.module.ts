@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
  
 
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     ProgressComponent,
     Grafica1Component,
-    PagesComponent]
+    PagesComponent,
+    AccountSettingsComponent]
     ,
   imports: [
     CommonModule , SharedModule, AppRoutingModule, FormsModule, ComponentsModule
@@ -28,6 +30,7 @@ import { FormsModule } from '@angular/forms';
    ProgressComponent,
    Grafica1Component,
    PagesComponent,
+   AccountSettingsComponent
   ]
 })
 export class PagesModule { }
