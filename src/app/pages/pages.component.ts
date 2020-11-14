@@ -13,7 +13,7 @@ export class PagesComponent implements OnInit {
   constructor(
     private  settingsServices:SettingsService
   ) { }
-
+    
   ngOnInit(): void {
     customInitFunctions();    
   }
