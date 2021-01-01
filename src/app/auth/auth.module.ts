@@ -3,11 +3,14 @@ import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UsuarioService } from '../services/usuario.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+ 
 
 @NgModule({
+providers:[UsuarioService],
+
   declarations: [
     LoginComponent,
     RegisterComponent,
@@ -15,8 +18,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
-  ],
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+   ],
   exports: [
     LoginComponent,
     RegisterComponent,

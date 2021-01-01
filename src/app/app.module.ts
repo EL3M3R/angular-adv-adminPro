@@ -1,11 +1,12 @@
 import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NotpagefoundComponent } from '../app/notpagefound/notpagefound.component';
 import { PagesModule } from './pages/pages.module';
+import { AppConfig } from 'src/environments/AppConfig';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,18 @@ import { PagesModule } from './pages/pages.module';
   imports: [
     BrowserModule, AppRoutingModule , PagesModule , AuthModule
   ],
-  providers: [],
+  providers: [{
+    provide: APP_INITIALIZER,
+    useFactory: httpAppConfig,
+    deps:[AppConfig], multi:true
+  } , 
+AppConfig
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+export function httpAppConfig(config: AppConfig){
+  return () => config.load()
+}
