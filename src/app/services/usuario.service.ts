@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -6,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { AppConfig } from 'src/environments/AppConfig';
 import { LoginForms } from '../interfaces/login-forms.interface';
 import { RegisterForm } from '../interfaces/register-forms.interface';
+import { Usuario } from '../models/usuario.model';
 
 declare const gapi: any;
 
@@ -15,6 +17,7 @@ declare const gapi: any;
 export class UsuarioService {
 
   public auth2: any;
+  public usuario: Usuario;
 
   private url = `${this.config.getEnv('adminPro_base_url')}`
   constructor
@@ -25,6 +28,14 @@ export class UsuarioService {
       private ngZone: NgZone,
   ) { this.googleInit() }
 
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get uid(): string {
+    return this.usuario.uid;
+  }
+
   googleInit() {
     return new Promise(resolve => {
       gapi.load('auth2', () => {
@@ -33,9 +44,9 @@ export class UsuarioService {
           cookiepolicy: 'single_host_origin',
         });
         resolve(this.auth2);
-       });
+      });
 
-     })
+    })
   }
 
   logOut() {
@@ -48,29 +59,56 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
 
     return this.http.get(`${this.url}login/renew`, {
       headers: {
-        'x-token': token
+        'x-token': this.token
       }
     }).pipe(
-      tap((resp: any) => {
+      map((resp: any) => {
+
+        const {
+          email,
+          google,
+          nombre,
+          role,
+          img = '',
+          uid
+        } = resp.usuario;
+
+        this.usuario = new Usuario(
+          nombre,
+          email,
+          '',
+          img,
+          google,
+          role, uid
+        )
         localStorage.setItem('token', resp.token)
+
+        return true;
       }),
-      map(resp => true),
       catchError(error => of(false))
     )
   }
-  /**
-   * .pipe(
-      tap( (resp:any) => {
-        localStorage.setItem('token' , resp.token)
-      }),
-      map( resp => true)
-    )
-    
-   */
+
+
+  ArmarUrlImageUsuario(Image) {
+    let urlImage: string = '';
+
+    if (Image.includes('https')) {
+      return urlImage = Image;
+    }
+
+    if (Image) {
+      urlImage = `${this.url}upload/usuarios/${Image}`;
+    } else {
+      urlImage = `${this.url}upload/usuarios/noimage`;
+      console.log("image url ", urlImage)
+    }
+
+    return urlImage;
+  }
 
   crearUsuario(formData: RegisterForm) {
     return this.http.post(this.url + 'usuarios/registroUsuarios', formData)
@@ -79,6 +117,22 @@ export class UsuarioService {
           localStorage.setItem('token', resp.token)
         })
       )
+  }
+
+
+  actualizarPerfil(data: { email: string, nombrea: string , role:string }) {
+
+    data = {
+      ...data, 
+      role: this.usuario.role
+    }  
+
+    return this.http.put(`${this.url}usuarios/${this.uid}`, data, {
+      headers: {
+        'x-token': this.token
+      }
+
+    })
   }
 
   login(formData: LoginForms) {

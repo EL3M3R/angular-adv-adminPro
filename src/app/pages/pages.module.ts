@@ -7,12 +7,13 @@ import { ProgressComponent } from './progress/progress.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
- 
- 
+import { PerfilComponent } from './perfil/perfil.component';
+
+
 
 @NgModule({
   declarations: [
@@ -22,20 +23,22 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     PagesComponent,
     AccountSettingsComponent,
     PromesasComponent,
-    RxjsComponent
-    ]
-    ,
+    RxjsComponent,
+    PerfilComponent
+  ]
+  ,
   imports: [
-    CommonModule , SharedModule, AppRoutingModule, FormsModule, ComponentsModule
- 
+    CommonModule, SharedModule, AppRoutingModule, FormsModule, ComponentsModule,
+    ReactiveFormsModule
+
   ],
   exports: [
-    CommonModule ,
+    CommonModule,
     DashboardComponent,
-   ProgressComponent,
-   Grafica1Component,
-   PagesComponent,
-   AccountSettingsComponent
+    ProgressComponent,
+    Grafica1Component,
+    PagesComponent,
+    AccountSettingsComponent
   ]
 })
 export class PagesModule { }

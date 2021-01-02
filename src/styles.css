@@ -8,3 +8,15 @@
     justify-content: center;
     text-align: center;
 }
+
+.topbar .profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+
+
+.img-avatar{
+    width: 200px;
+    height: 200px;
+}

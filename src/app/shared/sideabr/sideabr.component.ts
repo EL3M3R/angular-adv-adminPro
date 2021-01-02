@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SidebarService } from 'src/app/services/sidebar.service';
-import {RouterModule} from '@angular/router'
+import { RouterModule } from '@angular/router'
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { Usuario } from 'src/app/models/usuario.model';
 @Component({
   selector: 'app-sideabr',
   templateUrl: './sideabr.component.html',
@@ -9,10 +11,14 @@ import {RouterModule} from '@angular/router'
 })
 export class SideabrComponent implements OnInit {
 
-  menuItems: any[];
+  public menuItems: any[];
+  public usuario: Usuario
 
-  constructor(private sidebarService: SidebarService) { 
+  constructor(private sidebarService: SidebarService,
+    private usuarioService: UsuarioService,
+  ) {
     this.menuItems = sidebarService.menu;
+    this.usuario = this.usuarioService.usuario;
   }
 
   ngOnInit(): void {
